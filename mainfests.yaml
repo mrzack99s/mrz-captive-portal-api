@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: zauth-api
+  name: zauth-api
+  namespace: zauth
+
+spec:
+  loadBalancerIP: 10.254.0.13
+  ports:
+  - port: 8000
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app: zauth-api
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zauth-api
+  labels:
+    app: zauth-api
+  namespace: zauth
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: zauth-api
+  template:
+    metadata:
+      labels:
+        app: zauth-api
+    spec:
+      containers:
+      - name: zauth-api
+        image: rtnschool/zauth-api:v2beta
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 8000

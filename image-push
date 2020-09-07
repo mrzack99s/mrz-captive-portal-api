@@ -1,0 +1,13 @@
+#!/bin/bash
+
+VERSION="v2beta"
+PORT=8000
+
+#Build image
+docker build -t rtnschool/zauth-api:${VERSION} ./API
+docker push rtnschool/zauth-api
+
+#Assign version to deployment yaml file
+sed -i '0,/^\([[:space:]]*image: *\).*/s//\        image: rtnschool\/zauth-api:'${VERSION}'/;' mainfests.yaml
+sed -i '0,/^\([[:space:]]*- port: *\).*/s//\  - port: '${PORT}'/;' mainfests.yaml
+sed -i '0,/^\([[:space:]]*targetPort: *\).*/s//\    targetPort: '${PORT}'/;' mainfests.yaml

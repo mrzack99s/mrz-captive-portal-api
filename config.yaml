@@ -1,0 +1,18 @@
+zauth:
+    api:
+        port: ":8000"
+        production: false
+    radius:
+        hostURL: "10.254.0.12:1812"
+        secret: "rtnsecret"
+    mysql:
+        hostIP: "122.154.140.107"
+        port: 3306
+        username: "zradius_aaa"
+        password: "Yz9RT6pPIrRa6iJZ"
+        dbName: "zradius_aaa"
+    Operator:
+        shareKey: "rtnIdentity"
+        hostURL: "http://172.28.5.152:4443/zauth/v2beta"
+
+
