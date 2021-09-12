@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -16,6 +18,52 @@ var err error
 func main() {
 
 	configs.ParseSystemConfig()
+
+	val, present := os.LookupEnv("RADIUS_URL")
+	if present {
+		configs.SystemConfig.ZAuth.Radius.HostURL = val
+	}
+
+	val, present = os.LookupEnv("RADIUS_SECRET")
+	if present {
+		configs.SystemConfig.ZAuth.Radius.Secret = val
+	}
+
+	val, present = os.LookupEnv("MySQL_HOSTNAME")
+	if present {
+		configs.SystemConfig.ZAuth.MySQL.HostIP = val
+	}
+
+	val, present = os.LookupEnv("MySQL_PORT")
+	if present {
+		intVal, _ := strconv.Atoi(val)
+		configs.SystemConfig.ZAuth.MySQL.Port = intVal
+	}
+
+	val, present = os.LookupEnv("MySQL_USRNAME")
+	if present {
+		configs.SystemConfig.ZAuth.MySQL.Username = val
+	}
+
+	val, present = os.LookupEnv("MySQL_PASSWORD")
+	if present {
+		configs.SystemConfig.ZAuth.MySQL.Password = val
+	}
+
+	val, present = os.LookupEnv("MySQL_DB")
+	if present {
+		configs.SystemConfig.ZAuth.MySQL.DBName = val
+	}
+
+	val, present = os.LookupEnv("OPERATOR_SHAREKEY")
+	if present {
+		configs.SystemConfig.ZAuth.Operator.ShareKey = val
+	}
+
+	val, present = os.LookupEnv("OPERATOR_URL")
+	if present {
+		configs.SystemConfig.ZAuth.Operator.HostURL = val
+	}
 
 	configs.DB, err = gorm.Open("mysql", configs.DbURL(configs.BuildDBConfig()))
 	if err != nil {
